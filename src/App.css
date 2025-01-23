@@ -1,0 +1,331 @@
+/* Cores base */
+:root {
+  --primary-blue: #001f54;
+  --secondary-blue: #003a8c;
+  --highlight-orange: #ff8c00;
+  --neutral-white: #ffffff;
+  --neutral-gray: #f5f5f5;
+  --text-dark: #333333;
+}
+
+/* Estilos gerais */
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  color: var(--text-dark);
+  background-color: var(--neutral-gray);
+}
+
+header {
+  background: var(--primary-blue);
+  color: var(--neutral-white);
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+header h1 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+header h1 span {
+  color: var(--highlight-orange);
+}
+
+header p {
+  font-size: 1rem;
+  margin: 10px 0 20px;
+}
+
+header button {
+  background-color: var(--highlight-orange);
+  color: var(--neutral-white);
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+header button:hover {
+  background-color: #e67e00;
+}
+
+main {
+  padding: 20px;
+  background-color: var(--neutral-gray);
+}
+
+footer {
+  background-color: var(--primary-blue);
+  color: var(--neutral-white);
+  text-align: center;
+  padding: 10px 20px;
+  margin-top: auto;
+  border-radius: 10px;
+}
+
+footer p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+}
+
+
+
+/* Container */
+div {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background: var(--neutral-white);
+  box-shadow: var(--text-dark);
+  border-radius: 10px;
+}
+
+/* Botões */
+button {
+  background-color: var(--secondary-blue);
+  color: var(--neutral-white);
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 10px 5px;
+}
+
+button:hover {
+  background-color: var(--primary-blue);
+}
+
+/* Modal */
+.modal {
+  position: fixed; /* Garante que o modal esteja fixo em relação à tela */
+  top: 50%; /* Centraliza verticalmente */
+  left: 50%; /* Centraliza horizontalmente */
+  transform: translate(-50%, -50%); /* Ajusta a posição para o centro exato */
+  width: 100%; /* Ocupa toda a largura da tela */
+  height: 100%; /* Ocupa toda a altura da tela */
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo preto com 50% de opacidade */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Garante que fique acima de outros elementos */
+}
+
+.modal-content {
+  background: var(--neutral-white); /* Fundo branco do modal */
+  text-align: center;
+  padding: 20px; /* Espaçamento interno */
+  border-radius: 10px; /* Bordas arredondadas */
+  width: 90%; /* Adapta a largura em telas menores */
+  max-width: 500px; /* Largura máxima */
+  box-shadow: 0 4px 8px var(--text-dark); /* Sombra */
+  animation: fadeIn 0.3s ease-out; /* Animação de entrada */
+}
+
+.modal-header {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-close {
+  background-color: var(--highlight-orange);
+}
+
+.modal-close:hover {
+  background-color: var(--highlight-orange);
+}
+
+.modal-body input,
+.modal-body select {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--neutral-gray);
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: var(--neutral-white);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modal-body input:focus,
+.modal-body select:focus {
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 5px var(--secondary-blue);
+}
+
+
+.modal-footer button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-close {
+  background-color: var(--highlight-orange);
+}
+
+.modal-close:hover {
+  background-color: var(--highlight-orange);
+}
+
+.modal-primary {
+  background-color: var(--secondary-blue);
+}
+
+.modal-primary:hover {
+  background-color: var(--primary-blue);
+}
+
+.add_buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: var(--neutral-white);
+  box-shadow: 0 4px 8px var(--text-dark);
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+.add_buttons label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  font-size: 1rem;
+  color: var(--text-dark);
+}
+
+.add_buttons input,
+.add_buttons select {
+  padding: 10px;
+  border: 1px solid var(--text-dark);
+  border-radius: 5px;
+  font-size: 1rem;
+  margin-top: 5px;
+  background-color: var(--neutral-gray);
+  transition: all 0.3s ease;
+}
+
+.add_buttons input:focus,
+.add_buttons select:focus {
+  outline: none;
+  border-color: var(--highlight-orange);
+  background-color: var(--neutral-white);
+}
+
+.add_buttons select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.add_buttons option {
+  font-size: 1rem;
+}
+
+.add_buttons input::placeholder {
+  color: var(--text-dark);
+}
+
+
+/* Tabela */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background: var(--neutral-white);
+}
+
+thead {
+  background-color: var(--primary-blue);
+  color: var(--neutral-white);
+}
+
+th, td {
+  text-align: left;
+  padding: 15px;
+  border: 1px solid var(--neutral-gray);
+}
+
+th {
+  width: 20%;
+}
+
+/* Animação */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+form {
+  background-color: var(--neutral-white);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px var(--text-dark);
+}
+
+form h2 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: var(--primary-blue);
+}
+
+form .form-group {
+  margin-bottom: 15px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: var(--primary-blue);
+}
+
+form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--neutral-gray);
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+form button {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--primary-blue);
+  color: var(--neutral-white);
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: var(--secondary-blue);
+}
+
+
+
+
+

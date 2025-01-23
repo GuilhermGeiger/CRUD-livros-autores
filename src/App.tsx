@@ -1,0 +1,214 @@
+import React, { useState, useEffect } from 'react';
+import BookTable from './components/BookTable';
+import AuthorTable from './components/AuthorTable';
+import BookModal from './components/BookModal';
+import AuthorModal from './components/AuthorModal';
+import './App.css';
+
+export interface Book {
+  id: number;
+  name: string;
+  pages?: number;
+  authorId: number;
+  author?: Author | null;
+}
+
+export interface Author {
+  id: number;
+  name: string;
+  email?: string;
+  books?: Book[];
+}
+
+const App: React.FC = () => {
+  const [books, setBooks] = useState<Book[]>([]);
+  const [authors, setAuthors] = useState<Author[]>([]);
+  const [isBookModalOpen, setIsBookModalOpen] = useState(false);
+  const [isAuthorModalOpen, setIsAuthorModalOpen] = useState(false);
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  const [selectedAuthor, setSelectedAuthor] = useState<Author | null>(null);
+
+  // Recupera os dados do Local Storage ao carregar o componente
+  useEffect(() => {
+    const savedBooks = localStorage.getItem('books');
+    const savedAuthors = localStorage.getItem('authors');
+
+    if (savedBooks) {
+      const loadedBooks: Book[] = JSON.parse(savedBooks);
+      // Resetando IDs para começar de 1
+      const resetBooks = loadedBooks.map((book, index) => ({
+        ...book,
+        id: index + 1, // ID começa de 1
+      }));
+      setBooks(resetBooks);
+    }
+
+    if (savedAuthors) {
+      const loadedAuthors: Author[] = JSON.parse(savedAuthors);
+      // Resetando IDs para começar de 1
+      const resetAuthors = loadedAuthors.map((author, index) => ({
+        ...author,
+        id: index + 1, // ID começa de 1
+      }));
+      setAuthors(resetAuthors);
+    }
+  }, []); // Este useEffect roda apenas na primeira renderização
+
+  // Salva os livros no Local Storage sempre que eles forem alterados
+  useEffect(() => {
+    if (books.length) {
+      localStorage.setItem('books', JSON.stringify(books));
+    }
+  }, [books]);
+
+  // Salva os autores no Local Storage sempre que eles forem alterados
+  useEffect(() => {
+    if (authors.length) {
+      localStorage.setItem('authors', JSON.stringify(authors));
+    }
+  }, [authors]);
+
+  // Funções para adicionar livros e autores
+  const addBook = (data: { name: string; pages?: number; authorId: number }) => {
+    const authorExists = authors.some((author) => author.id === data.authorId);
+
+    if (!data.name.trim()) {
+      alert('O nome do livro é obrigatório. Por favor, forneça um nome válido.');
+      return;
+    }
+
+    if (!authorExists) {
+      alert('Autor não encontrado. Por favor, selecione um autor válido.');
+      return;
+    }
+  
+    const nextId = books.length > 0 ? Math.max(...books.map(book => book.id)) + 1 : 1;
+  
+    const newBook: Book = {
+      id: nextId, // Gera o próximo ID sequencial
+      ...data,
+    };
+  
+    setBooks([...books, newBook]);
+  };
+
+  // Função para adicionar um autor com ID sequencial
+  const addAuthor = (data: { name: string; email?: string }) => {
+    const isValidEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+    };
+
+    if (!data.name.trim()) {
+      alert('O nome do autor é obrigatório. Por favor, forneça um nome válido.');
+      return;
+    }
+
+    if (data.email && !isValidEmail(data.email)) {
+      alert('Email inválido. Por favor, forneça um email válido.');
+      return;
+    }
+    
+    const nextId = authors.length > 0 ? Math.max(...authors.map((a) => a.id)) + 1 : 1;
+    const newAuthor: Author = {
+      id: nextId, // Gera o próximo ID sequencial
+      ...data,
+    };
+    setAuthors([...authors, newAuthor]);
+};
+
+
+  // Funções para excluir livros e autores
+  const deleteBook = (id: number) => {
+    if (window.confirm('Tem certeza que deseja excluir este livro?')) {
+      const updatedBooks = books.filter((book) => book.id !== id);
+      setBooks(updatedBooks);
+      localStorage.setItem('books', JSON.stringify(updatedBooks)); // Atualiza o Local Storage
+    }
+  };
+
+  const deleteAuthor = (id: number) => {
+    if (window.confirm('Tem certeza que deseja excluir este autor?')) {
+      const updatedAuthors = authors.filter((author) => author.id !== id);
+      setAuthors(updatedAuthors);
+      localStorage.setItem('authors', JSON.stringify(updatedAuthors)); // Atualiza o Local Storage
+    }
+  };
+
+  // Funções para exibir modais com detalhes de livros e autores
+  const viewBook = (book: Book) => {
+    setSelectedBook(book);
+    setIsBookModalOpen(true);
+  };
+
+  const viewAuthor = (author: Author) => {
+    setSelectedAuthor(author);
+    setIsAuthorModalOpen(true);
+  };
+
+  // Função para obter os livros vinculados a um autor
+  const getBooksByAuthorId = (authorId: number): Book[] => {
+    return books.filter((book) => book.authorId === authorId);
+  };
+
+  // Função para obter o autor de um livro
+  const getAuthorById = (id: number): Author | null => {
+    return authors.find((author) => author.id === id) || null;
+  };
+
+  const closeBookModal = () => {
+    setSelectedBook(null);
+    setIsBookModalOpen(false);
+  };
+  
+  const closeAuthorModal = () => {
+    setSelectedAuthor(null);
+    setIsAuthorModalOpen(false);
+  };
+
+  return (
+      <div className="app-container">
+        <header className="app-header">
+          <h1>Gerenciador de Livros e Autores</h1>
+          <p>Organize e gerencie suas coleções de forma fácil e eficiente.</p>
+        </header>
+  
+        <main className="app-main">
+          <div className="actions">
+            <button onClick={() => setIsBookModalOpen(true)}>Adicionar Livro</button>
+            <button onClick={() => setIsAuthorModalOpen(true)}>Adicionar Autor</button>
+          </div>
+  
+          <h2>Livros</h2>
+          <BookTable books={books} onDelete={deleteBook} onView={viewBook} />
+          <h2>Autores</h2>
+          <AuthorTable authors={authors} onDelete={deleteAuthor} onView={viewAuthor} />
+  
+          <BookModal
+            isOpen={isBookModalOpen}
+            onClose={closeBookModal}
+            onSubmit={selectedBook ? undefined : addBook}
+            book={selectedBook}
+            mode={selectedBook ? 'view' : 'edit'}
+            authors={authors}
+          />
+  
+          <AuthorModal
+            isOpen={isAuthorModalOpen}
+            onClose={closeAuthorModal}
+            onSubmit={selectedAuthor ? undefined : addAuthor}
+            author={selectedAuthor}
+            mode={selectedAuthor ? 'view' : 'edit'}
+            books={selectedAuthor ? getBooksByAuthorId(selectedAuthor.id) : []}
+          />
+        </main>
+  
+        <footer className="app-footer">
+          <p>© {new Date().getFullYear()} Gerenciador de Livros e Autores. Todos os direitos reservados.</p>
+          <p>Produzido por Guilherme Geiger.</p>
+        </footer>
+      </div>
+    );
+};
+
+export default App;
