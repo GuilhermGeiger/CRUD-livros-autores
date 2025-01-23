@@ -28,47 +28,47 @@ const App: React.FC = () => {
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [selectedAuthor, setSelectedAuthor] = useState<Author | null>(null);
 
-  // Recupera os dados do Local Storage ao carregar o componente
+  
   useEffect(() => {
     const savedBooks = localStorage.getItem('books');
     const savedAuthors = localStorage.getItem('authors');
 
     if (savedBooks) {
       const loadedBooks: Book[] = JSON.parse(savedBooks);
-      // Resetando IDs para começar de 1
+      
       const resetBooks = loadedBooks.map((book, index) => ({
         ...book,
-        id: index + 1, // ID começa de 1
+        id: index + 1, 
       }));
       setBooks(resetBooks);
     }
 
     if (savedAuthors) {
       const loadedAuthors: Author[] = JSON.parse(savedAuthors);
-      // Resetando IDs para começar de 1
+      
       const resetAuthors = loadedAuthors.map((author, index) => ({
         ...author,
-        id: index + 1, // ID começa de 1
+        id: index + 1, 
       }));
       setAuthors(resetAuthors);
     }
-  }, []); // Este useEffect roda apenas na primeira renderização
+  }, []); 
 
-  // Salva os livros no Local Storage sempre que eles forem alterados
+  
   useEffect(() => {
     if (books.length) {
       localStorage.setItem('books', JSON.stringify(books));
     }
   }, [books]);
 
-  // Salva os autores no Local Storage sempre que eles forem alterados
+  
   useEffect(() => {
     if (authors.length) {
       localStorage.setItem('authors', JSON.stringify(authors));
     }
   }, [authors]);
 
-  // Funções para adicionar livros e autores
+  //Função para adicionar livros
   const addBook = (data: { name: string; pages?: number; authorId: number }) => {
     const authorExists = authors.some((author) => author.id === data.authorId);
 
@@ -85,14 +85,14 @@ const App: React.FC = () => {
     const nextId = books.length > 0 ? Math.max(...books.map(book => book.id)) + 1 : 1;
   
     const newBook: Book = {
-      id: nextId, // Gera o próximo ID sequencial
+      id: nextId,
       ...data,
     };
   
     setBooks([...books, newBook]);
   };
 
-  // Função para adicionar um autor com ID sequencial
+  //Função para adicionar autores
   const addAuthor = (data: { name: string; email?: string }) => {
     const isValidEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -111,7 +111,7 @@ const App: React.FC = () => {
     
     const nextId = authors.length > 0 ? Math.max(...authors.map((a) => a.id)) + 1 : 1;
     const newAuthor: Author = {
-      id: nextId, // Gera o próximo ID sequencial
+      id: nextId, 
       ...data,
     };
     setAuthors([...authors, newAuthor]);
@@ -123,7 +123,7 @@ const App: React.FC = () => {
     if (window.confirm('Tem certeza que deseja excluir este livro?')) {
       const updatedBooks = books.filter((book) => book.id !== id);
       setBooks(updatedBooks);
-      localStorage.setItem('books', JSON.stringify(updatedBooks)); // Atualiza o Local Storage
+      localStorage.setItem('books', JSON.stringify(updatedBooks)); 
     }
   };
 
@@ -131,7 +131,7 @@ const App: React.FC = () => {
     if (window.confirm('Tem certeza que deseja excluir este autor?')) {
       const updatedAuthors = authors.filter((author) => author.id !== id);
       setAuthors(updatedAuthors);
-      localStorage.setItem('authors', JSON.stringify(updatedAuthors)); // Atualiza o Local Storage
+      localStorage.setItem('authors', JSON.stringify(updatedAuthors)); 
     }
   };
 

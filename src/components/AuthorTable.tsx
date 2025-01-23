@@ -9,7 +9,7 @@ interface Author {
 interface AuthorTableProps {
   authors: Author[];
   onDelete: (id: number) => void;
-  onView: (author: Author) => void;  // Esperando a função onView
+  onView: (author: Author) => void;  
 }
 
 const AuthorTable: React.FC<AuthorTableProps> = ({ authors, onDelete, onView }) => {

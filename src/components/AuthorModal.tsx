@@ -37,7 +37,6 @@ const AuthorModal: React.FC<AuthorModalProps> = ({
 
   const handleSubmit = () => {
     if (onSubmit) {
-      // Não gere o ID aqui, apenas passe os dados para o `onSubmit`
       onSubmit({ id: author?.id || 0, name, email });
     }
     onClose();

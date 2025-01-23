@@ -10,7 +10,7 @@ interface Book {
 interface BookTableProps {
   books: Book[];
   onDelete: (id: number) => void;
-  onView: (book: Book) => void;  // Esperando a função onView
+  onView: (book: Book) => void;  
 }
 
 const BookTable: React.FC<{ books: Book[]; onDelete: (id: number) => void; onView: (book: Book) => void }> = ({ books, onDelete, onView }) => {

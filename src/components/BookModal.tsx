@@ -4,10 +4,10 @@ import { Book, Author } from '../App';
 interface BookModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit?: (book: Book) => void; // Opcional, usado apenas em modo de edição
+  onSubmit?: (book: Book) => void; 
   book?: Book | null;
   mode: 'view' | 'edit';
-  authors: Author[]; // Lista de autores disponível
+  authors: Author[]; 
 }
 
 const BookModal: React.FC<BookModalProps> = ({
@@ -24,7 +24,7 @@ const BookModal: React.FC<BookModalProps> = ({
     book?.authorId || 0
   );
 
-  // Limpeza de estado ao fechar o modal
+  
   useEffect(() => {
     if (!isOpen) {
       setName('');
@@ -33,7 +33,7 @@ const BookModal: React.FC<BookModalProps> = ({
     }
   }, [isOpen]);
 
-  // Atualiza o estado ao editar um livro existente
+  
   useEffect(() => {
     if (book) {
       setName(book.name);
@@ -50,14 +50,14 @@ const BookModal: React.FC<BookModalProps> = ({
 
     if (onSubmit) {
       onSubmit({
-        id: book?.id || Date.now(), // Usando Date.now() para gerar IDs únicos
+        id: book?.id || Date.now(), 
         name,
         pages,
         authorId: selectedAuthorId,
       });
     }
     onClose();
-    window.location.reload(); // Recarrega a página
+    window.location.reload(); 
   };
 
   if (!isOpen) return null;
