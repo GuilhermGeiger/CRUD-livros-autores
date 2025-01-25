@@ -78,7 +78,7 @@ const App: React.FC = () => {
     }
 
     if (!authorExists) {
-      alert('Autor não encontrado. Por favor, selecione um autor válido.');
+      alert('Autor não encontrado. Por favor, selecione um autor válido. Caso seu autor não esteja cadastrado, clique no botão "+" para adicioná-lo');
       return;
     }
   
@@ -175,8 +175,8 @@ const App: React.FC = () => {
   
         <main className="app-main">
           <div className="actions">
+          <button onClick={() => setIsAuthorModalOpen(true)}>Adicionar Autor</button>
             <button onClick={() => setIsBookModalOpen(true)}>Adicionar Livro</button>
-            <button onClick={() => setIsAuthorModalOpen(true)}>Adicionar Autor</button>
           </div>
   
           <h2>Livros</h2>
@@ -191,6 +191,7 @@ const App: React.FC = () => {
             book={selectedBook}
             mode={selectedBook ? 'view' : 'edit'}
             authors={authors}
+            setIsAuthorModalOpen={setIsAuthorModalOpen}
           />
   
           <AuthorModal

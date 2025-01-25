@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Book, Author } from '../App';
 
+
 interface BookModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -8,6 +9,7 @@ interface BookModalProps {
   book?: Book | null;
   mode: 'view' | 'edit';
   authors: Author[]; 
+  setIsAuthorModalOpen: (isOpen: boolean) => void;
 }
 
 const BookModal: React.FC<BookModalProps> = ({
@@ -17,6 +19,7 @@ const BookModal: React.FC<BookModalProps> = ({
   book,
   mode,
   authors,
+  setIsAuthorModalOpen, 
 }) => {
   const [name, setName] = useState(book?.name || '');
   const [pages, setPages] = useState(book?.pages || 0);
@@ -24,7 +27,6 @@ const BookModal: React.FC<BookModalProps> = ({
     book?.authorId || 0
   );
 
-  
   useEffect(() => {
     if (!isOpen) {
       setName('');
@@ -33,7 +35,6 @@ const BookModal: React.FC<BookModalProps> = ({
     }
   }, [isOpen]);
 
-  
   useEffect(() => {
     if (book) {
       setName(book.name);
@@ -44,7 +45,7 @@ const BookModal: React.FC<BookModalProps> = ({
 
   const handleSubmit = () => {
     if (!selectedAuthorId) {
-      alert('Por favor, selecione um autor válido.');
+      alert('Por favor, selecione um autor válido. Caso seu autor não esteja cadastrado, clique no botão "+" para adicioná-lo');
       return;
     }
 
@@ -76,44 +77,45 @@ const BookModal: React.FC<BookModalProps> = ({
           </>
         ) : (
           <>
-          <div className='add_buttons'>
-            <label>
-              Nome:
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Digite o nome do livro"
-              />
-            </label>
-            <label>
-              Páginas:
-              <input
-                type="number"
-                value={pages}
-                onChange={(e) => setPages(Math.max(0, Number(e.target.value)))}
-                placeholder="Digite o número de páginas"
-              />
-            </label>
-            <label>
-              Autor:
-              <select
-                value={selectedAuthorId}
-                onChange={(e) => setSelectedAuthorId(Number(e.target.value))}
-              >
-                <option value="0">Selecione um autor</option>
-                {authors.map((author) => (
-                  <option key={author.id} value={author.id}>
-                    {author.name}
-                  </option>
-                ))}
-              </select>
-            </label>
+            <div className='add_buttons'>
+              <label>
+                Nome:
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Digite o nome do livro"
+                />
+              </label>
+              <label>
+                Páginas:
+                <input
+                  type="number"
+                  value={pages}
+                  onChange={(e) => setPages(Math.max(0, Number(e.target.value)))}
+                  placeholder="Digite o número de páginas"
+                />
+              </label>
+              <label>
+                Autor:
+                <select
+                  value={selectedAuthorId}
+                  onChange={(e) => setSelectedAuthorId(Number(e.target.value))}
+                >
+                  <option value="0">Selecione um autor</option>
+                  {authors.map((author) => (
+                    <option key={author.id} value={author.id}>
+                      {author.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
             </div>
             <button onClick={handleSubmit}>Salvar</button>
           </>
         )}
         <button onClick={onClose}>Fechar</button>
+        <button onClick={() => setIsAuthorModalOpen(true)}>+</button>
       </div>
     </div>
   );
