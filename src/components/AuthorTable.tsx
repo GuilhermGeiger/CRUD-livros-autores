@@ -10,9 +10,10 @@ interface AuthorTableProps {
   authors: Author[];
   onDelete: (id: number) => void;
   onView: (author: Author) => void;  
+  onEdit: (author: Author) => void;
 }
 
-const AuthorTable: React.FC<AuthorTableProps> = ({ authors, onDelete, onView }) => {
+const AuthorTable: React.FC<AuthorTableProps> = ({ authors, onDelete, onView, onEdit}) => {
   return (
     <table className="author-table">
       <thead>
@@ -31,6 +32,7 @@ const AuthorTable: React.FC<AuthorTableProps> = ({ authors, onDelete, onView }) 
             <td>{author.email || 'Não informado'}</td>
             <td className='actions'>
               <button onClick={() => onView(author)}>Ver</button>
+              <button onClick={() => onEdit(author)}>Editar</button>
               <button onClick={() => onDelete(author.id)}>Excluir</button>
             </td>
           </tr>

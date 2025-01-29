@@ -6,7 +6,7 @@ interface AuthorModalProps {
   onClose: () => void;
   onSubmit?: (author: Author) => void;
   author?: Author | null;
-  mode: 'view' | 'edit';
+  mode: 'view' | 'edit' | 'create';
   books?: Book[];
 }
 
@@ -49,7 +49,7 @@ const AuthorModal: React.FC<AuthorModalProps> = ({
   return (
     <div className="modal">
       <div className="modal-content">
-        <h2>{mode === 'edit' ? 'Adicionar Autor' : 'Detalhes do Autor'}</h2>
+      <h2>{mode === 'edit' ? 'Editar Autor' : 'Detalhes do Autor'}</h2>
         {mode === 'view' ? (
           <>
             <p>

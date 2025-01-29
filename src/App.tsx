@@ -90,7 +90,27 @@ const App: React.FC = () => {
     };
   
     setBooks([...books, newBook]);
+
+    window.location.reload()
   };
+
+  const updateBook = (updatedBook: Book) => {
+    const updatedBooks = books.map((book) =>
+      book.id === updatedBook.id ? updatedBook : book
+    );
+    setBooks(updatedBooks);
+    localStorage.setItem('books', JSON.stringify(updatedBooks)); 
+  };
+
+  const updateAuthor = (updatedAuthor: Author) => {
+    const updatedAuthors = authors.map((author) =>
+      author.id === updatedAuthor.id ? updatedAuthor : author
+    );
+    setAuthors(updatedAuthors);
+    localStorage.setItem('authors', JSON.stringify(updatedAuthors)); 
+  };
+  
+  
 
   //Função para adicionar autores
   const addAuthor = (data: { name: string; email?: string }) => {
@@ -180,28 +200,51 @@ const App: React.FC = () => {
           </div>
   
           <h2>Livros</h2>
-          <BookTable books={books} onDelete={deleteBook} onView={viewBook} />
+          <BookTable
+          books={books}
+          onDelete={deleteBook}
+          onView={viewBook}
+          onEdit={(book) => {
+            setSelectedBook(book);
+            setIsBookModalOpen(true); 
+          }}
+        />
+
           <h2>Autores</h2>
-          <AuthorTable authors={authors} onDelete={deleteAuthor} onView={viewAuthor} />
+          <AuthorTable
+            authors={authors}
+            onDelete={deleteAuthor}
+            onView={(author) => {
+              setSelectedAuthor(author); 
+              setIsAuthorModalOpen(true);
+            }}
+            onEdit={(author) => {
+              setSelectedAuthor(author); 
+              setIsAuthorModalOpen(true); 
+            }}
+          />
+
   
           <BookModal
             isOpen={isBookModalOpen}
             onClose={closeBookModal}
-            onSubmit={selectedBook ? undefined : addBook}
+            onSubmit={selectedBook ? updateBook : addBook} // Passa a função correta
             book={selectedBook}
-            mode={selectedBook ? 'view' : 'edit'}
+            mode={selectedBook ? 'edit' : 'create'} // Novo modo para diferenciar criação e edição
             authors={authors}
             setIsAuthorModalOpen={setIsAuthorModalOpen}
-          />
-  
+        />
+
           <AuthorModal
             isOpen={isAuthorModalOpen}
             onClose={closeAuthorModal}
-            onSubmit={selectedAuthor ? undefined : addAuthor}
+            onSubmit={selectedAuthor ? updateAuthor : addAuthor} // Define se é criação ou edição
             author={selectedAuthor}
-            mode={selectedAuthor ? 'view' : 'edit'}
+            mode={selectedAuthor ? 'edit' : 'create'} // Diferencia os modos de edição e criação
             books={selectedAuthor ? getBooksByAuthorId(selectedAuthor.id) : []}
           />
+
+
         </main>
   
         <footer className="app-footer">

@@ -7,7 +7,7 @@ interface BookModalProps {
   onClose: () => void;
   onSubmit?: (book: Book) => void; 
   book?: Book | null;
-  mode: 'view' | 'edit';
+  mode: 'view' | 'edit' | 'create';
   authors: Author[]; 
   setIsAuthorModalOpen: (isOpen: boolean) => void;
 }
@@ -45,28 +45,32 @@ const BookModal: React.FC<BookModalProps> = ({
 
   const handleSubmit = () => {
     if (!selectedAuthorId) {
-      alert('Por favor, selecione um autor válido. Caso seu autor não esteja cadastrado, clique no botão "+" para adicioná-lo');
+      alert('Por favor, selecione um autor válido.');
       return;
     }
-
+  
+    const bookData: Book = {
+      id: book?.id || Date.now(),
+      name,
+      pages,
+      authorId: selectedAuthorId,
+    };
+  
     if (onSubmit) {
-      onSubmit({
-        id: book?.id || Date.now(), 
-        name,
-        pages,
-        authorId: selectedAuthorId,
-      });
+      onSubmit(bookData);
     }
+  
     onClose();
-    window.location.reload(); 
   };
+  
+  
 
   if (!isOpen) return null;
 
   return (
     <div className="modal">
       <div className="modal-content">
-        <h2>{mode === 'edit' ? 'Adicionar Livro' : 'Detalhes do Livro'}</h2>
+        <h2>{mode === 'edit' ? 'Editar Livro' : 'Detalhes do Livro'}</h2>
         {mode === 'view' ? (
           <>
             <p><strong>ID:</strong> {book?.id || 'N/A'}</p>
